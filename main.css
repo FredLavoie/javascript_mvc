@@ -1,4 +1,68 @@
 html {
 	font-family: sans-serif;
-	font-size: 1rem;
+	font-size: 1em;
+	display: flex;
+	justify-content: center;
+}
+
+h1 {
+	text-align: center;
+}
+
+#root {
+	width: 500px;
+}
+
+ul {
+	list-style-type: none;
+  margin: 0;
+	padding: 0;
+}
+
+li {
+	display: flex;
+	align-items: center;
+}
+
+.editable {
+	flex-grow: 1;
+}
+
+form button {
+	display: inline-block;
+	-webkit-appearance: none;
+	padding: 0.2em 0.8em;
+	font-size: .75em;
+	border-radius: 3px;
+	cursor: pointer;
+	background: #28a745;
+	color: white;
+	border: 2px solid #28a745;
+	margin: 0.5em;
+}
+
+li button {
+	display: inline-block;
+	-webkit-appearance: none;
+	padding: 0.2em 0.8em;
+	font-size: .75em;
+	border-radius: 3px;
+	cursor: pointer;
+	background: #dc3545;
+	color: white;
+	border: 2px solid #dc3545;
+	margin: 0.5em;
+}
+
+form {
+	display: flex;
+	justify-content: center;
+}
+
+form input {
+	padding: 0.1em;
+	margin: 0.4em;
+	border: 2px solid #ccc;
+	border-radius: 3px;
+	flex-grow: 1;
 }

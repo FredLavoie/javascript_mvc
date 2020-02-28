@@ -216,8 +216,8 @@ class Controller {
 
 		// explicit 'this' binding
 		this.model.bindTodoListChanged(this.onTodoListChanged)
-		this.view.bindEditTodo(this.handleEditTodo);
 		this.view.bindAddTodo(this.handleAddTodo);
+		this.view.bindEditTodo(this.handleEditTodo);
 		this.view.bindDeleteTodo(this.handleDeleteTodo);
 		this.view.bindToggleTodo(this.handleToggleTodo);
 
