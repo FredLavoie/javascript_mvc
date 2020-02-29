@@ -1,56 +1,4 @@
-/**************************************** MODEL ****************************************/
-class Model {
-  constructor() {
-    this.todos = JSON.parse(localStorage.getItem('todos')) || [];
-  }
-
-  bindTodoListChanged(callback) {
-    this.onTodoListChanged = callback;
-  }
-
-  _commit(todos) {
-    this.onTodoListChanged(this.todos);
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }
-
-  // create a new todo and give it the id of the array length
-  addTodo(todoText) {
-    let newId = this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1
-    const todo = {
-      id: newId,
-      text: todoText,
-      complete: false,
-    }
-    this.todos.push(todo);
-    this._commit(this.todos);
-  }
-
-  // recreate the todos array while updating the text of the selected todo given an id
-  editTodo(id, updatedText) {
-    this.todos = this.todos.map(todo => 
-      todo.id === id ? { id: todo.id, text: updatedText, complete: todo.complete } : todo
-    );
-    this._commit(this.todos);
-  }
-
-  // filter out all todos where id does not equal the one passed in to the method
-  deleteTodo(id) {
-    this.todos = this.todos.filter(todo => todo.id !== id);
-    this._commit(this.todos);
-  }
-
-  // mark todo as completed
-  toggleTodo(id) {
-    this.todos = this.todos.map(todo =>
-      todo.id === id ? { id: todo.id, text: todo.text, complete: !todo.complete } : todo
-    );
-    this._commit(this.todos);
-  }
-
-}
-
-/**************************************** VIEW *****************************************/
-class View {
+export default class View {
   constructor() {
     // The root element
     this.app = this.getElement('#root');
@@ -90,7 +38,7 @@ class View {
 
     return element;
   }
-  
+
   // Retrieve an element from the DOM
   getElement(selector) {
     const element = document.querySelector(selector);
@@ -178,76 +126,32 @@ class View {
   bindAddTodo(handler) {
     this.form.addEventListener('submit', event => {
       event.preventDefault();
-  
+
       if (this._todoText) {
         handler(this._todoText);
         this._resetInput();
       }
     })
   }
-  
+
   bindDeleteTodo(handler) {
     this.todoList.addEventListener('click', event => {
       if (event.target.className === 'delete') {
         const id = parseInt(event.target.parentElement.id);
-  
+
         handler(id);
       }
     })
   }
-  
+
   bindToggleTodo(handler) {
     this.todoList.addEventListener('change', event => {
       if (event.target.type === 'checkbox') {
         const id = parseInt(event.target.parentElement.id);
-  
+
         handler(id);
       }
     })
   }
 
 }
-
-/**************************************** CONTROLLER ***********************************/
-class Controller {
-  constructor(model, view) {
-    this.model = model;
-    this.view = view;
-
-    // explicit 'this' binding
-    this.model.bindTodoListChanged(this.onTodoListChanged)
-    this.view.bindAddTodo(this.handleAddTodo);
-    this.view.bindEditTodo(this.handleEditTodo);
-    this.view.bindDeleteTodo(this.handleDeleteTodo);
-    this.view.bindToggleTodo(this.handleToggleTodo);
-
-    // display initial todos
-    this.onTodoListChanged(this.model.todos);
-  }
-  
-  onTodoListChanged = todos => {
-    this.view.displayTodos(todos);
-  }
-
-  handleAddTodo = todoText => {
-    this.model.addTodo(todoText);
-  }
-  
-  handleEditTodo = (id, todoText) => {
-    this.model.editTodo(id, todoText);
-  }
-  
-  handleDeleteTodo = id => {
-    this.model.deleteTodo(id);
-  }
-  
-  handleToggleTodo = id => {
-    this.model.toggleTodo(id);
-  }
-
-}
-
-/***************************************************************************************/
-// Instantiate the app with a Controller object,
-// a Model object and a View object
-const app = new Controller(new Model(), new View());
